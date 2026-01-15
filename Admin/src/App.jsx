@@ -1,0 +1,60 @@
+import React, { useContext } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Login from './pages/Login'
+import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
+
+// Admin Pages
+import Dashboard from './pages/Admin/Dashbord';
+import Appointment from './pages/Admin/Appointment';
+import DoctorList from './pages/Admin/DoctorList';
+import AddDoctor from './pages/Admin/AddDoctor';
+
+// Doctor Pages
+import DoctorDashboard from './pages/Doctor/DoctorDashboard'
+import DoctorAppointments from './pages/Doctor/DoctorAppointments'
+import DoctorProfile from './pages/Doctor/DoctorProfile'
+
+import { AdminContext } from './context/AdminContext'
+import { DoctorContext } from './context/DoctorContext'
+
+
+const App = () => {
+  const { aToken } = useContext(AdminContext)
+  const { dToken } = useContext(DoctorContext)
+
+  return (
+    <div className='bg-[#F8F9FD]'>
+      <ToastContainer />
+      {/* Show Navbar if logged in */}
+      {(aToken || dToken) && <Navbar />}
+      
+      <div className='flex items-start'>
+        {/* Show Sidebar if logged in */}
+        {(aToken || dToken) && <Sidebar />}
+        
+        <Routes>
+          {/* Public Route */}
+          <Route path='/' element={<Login />} />
+          <Route path='/login' element={<Login />} />
+
+          {/* Admin Routes */}
+          <Route path='/admin-dashboard' element={<Dashboard/>} />
+          <Route path='/all-appointments' element={<Appointment/>} />
+          <Route path='/add-doctor' element={<AddDoctor/>}/>
+          <Route path='/doctor-list' element={<DoctorList/>} />
+
+          {/* Doctor Routes */}
+          <Route path='/doctor-dashboard' element={<DoctorDashboard />} />
+          <Route path='/doctor-appointments' element={<DoctorAppointments />} />
+          <Route path='/doctor-profile' element={<DoctorProfile />} />
+        </Routes>
+      </div>
+    </div>
+  )
+}
+
+export default App
